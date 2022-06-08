@@ -6,6 +6,7 @@ import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/constants/form_validator_constant.dart';
 import 'package:ifresh_originals_admin_panel/controller/form_validation_controller.dart';
 import 'package:ifresh_originals_admin_panel/controller/user_auth_controller.dart';
+import 'package:ifresh_originals_admin_panel/view/screens/home_screens/home_screen.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -135,7 +136,9 @@ class LoginScreen extends StatelessWidget {
                                   buttonHeight: 45,
                                   buttonName: "Login",
                                   buttonWidth: 1.sw,
-                                  onTap: (){},
+                                  onTap: (){
+                                    Get.to(() => HomeScreen());
+                                  },
                                   buttonColor: redColor,
                                   textColor: Colors.white
                                 )
