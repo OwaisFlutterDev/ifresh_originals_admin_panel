@@ -74,7 +74,8 @@ class LoginScreen extends StatelessWidget {
                                       borderRadius:  BorderRadius.circular(40.0),
                                       boxShadow: const [
                                         BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.4)
-                                      ]),
+                                      ]
+                                  ),
                                   child: commonTextFormField(
                                     prefixIcon: Padding(
                                       padding:  EdgeInsets.only(right: 15,left: 24),
