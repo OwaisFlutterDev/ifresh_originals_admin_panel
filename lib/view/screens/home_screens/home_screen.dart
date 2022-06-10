@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget{
                          controller.selectedIndex == 1 ? shirtWidget(context) :
                          controller.selectedIndex == 2 ? stickerWidget(context) :
                          controller.selectedIndex == 3 ? orderWidget() :
-                         priceWidget()
+                         priceWidget(context)
 
                 )
               ],
