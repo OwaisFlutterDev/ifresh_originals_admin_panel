@@ -6,7 +6,7 @@ import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/dashboard_widget.dart';
-import 'package:ifresh_originals_admin_panel/view/widgets/home_scree_widget.dart';
+import 'package:ifresh_originals_admin_panel/view/widgets/home_screen_widget.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/order_widget.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/prices_widget.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/shirt_images_widget.dart';
@@ -129,7 +129,7 @@ class HomeScreen extends StatelessWidget{
                   child: controller.selectedIndex == 0 ? dashboardWidget() :
                          controller.selectedIndex == 1 ? shirtWidget(context) :
                          controller.selectedIndex == 2 ? stickerWidget(context) :
-                         controller.selectedIndex == 3 ? orderWidget() :
+                         controller.selectedIndex == 3 ? orderWidget(context) :
                          priceWidget(context)
 
                 )

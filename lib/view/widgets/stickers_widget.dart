@@ -73,6 +73,9 @@ SizedBox stickerWidget(context) {
                 );
               },
             ),
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
@@ -192,9 +195,15 @@ AlertDialog addStickerImagesAlertDialogWidget() {
                         // --- === button === ---
                         SizedBox(height: 10.h,),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            SizedBox(width: 1,),
                             largeText(title: "Add New Sticker",fontWeight: FontWeight.w500),
+                            InkWell(
+                                onTap: (){
+                                  Get.back();
+                                },
+                                child: Icon(CupertinoIcons.clear))
                           ],),
                         SizedBox(height: 60.h,),
                         // ------====--------------------------------------------------------------===-----
@@ -204,11 +213,11 @@ AlertDialog addStickerImagesAlertDialogWidget() {
                           key: controller.stickerImageFormKey,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               // ----=-=--- shirt name form field ---=-=-----
                               Container(
-                                width: 220.w,
+                                width: 350.w,
                                 decoration:  BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:  BorderRadius.circular(40.0),
@@ -234,7 +243,7 @@ AlertDialog addStickerImagesAlertDialogWidget() {
                           children: [
                             //-=- ======== add front image button ======== -=-
                             Container(
-                                width: 220.w,
+                                width: 350.w,
                                 decoration:  BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:  BorderRadius.circular(10.0),
@@ -322,9 +331,17 @@ AlertDialog editStickerImagesAlertDialogWidget() {
                         // --- === button === ---
                         SizedBox(height: 10.h,),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            SizedBox(
+                              width: 1,
+                            ),
                             largeText(title: "Update Sticker",fontWeight: FontWeight.w500),
+                            InkWell(
+                                onTap: (){
+                                  Get.back();
+                                },
+                                child: Icon(CupertinoIcons.clear))
                           ],),
                         SizedBox(height: 60.h,),
                         // ------====--------------------------------------------------------------===-----
@@ -334,11 +351,11 @@ AlertDialog editStickerImagesAlertDialogWidget() {
                           key: controller.editStickerImageFormKey,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               // ----=-=--- shirt name form field ---=-=-----
                               Container(
-                                width: 220.w,
+                                width: 350.w,
                                 decoration:  BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:  BorderRadius.circular(40.0),
@@ -360,10 +377,11 @@ AlertDialog editStickerImagesAlertDialogWidget() {
                         // ------====--------------------------------------------------------------===-----
                         SizedBox(height: 60.h,),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             //-=- ======== add front image button ======== -=-
                             Container(
-                                width: 220.w,
+                                width: 350.w,
                                 decoration:  BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:  BorderRadius.circular(10.0),

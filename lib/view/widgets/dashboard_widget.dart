@@ -67,6 +67,9 @@ SizedBox dashboardWidget() {
 
               ],
             ),
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),

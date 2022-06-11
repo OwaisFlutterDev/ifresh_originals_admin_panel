@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(1080, 1920),
+        designSize: Size(1920, 1080),
         minTextAdapt: true,
         builder: (context , child) {
           return GetMaterialApp(
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.deepOrange,
             ),
-            home: HomeScreen(),
+            home: LoginScreen(),
           );
         }
     );

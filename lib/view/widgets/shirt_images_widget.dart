@@ -73,6 +73,9 @@ Widget shirtWidget(context) {
                 );
               },
             ),
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
@@ -199,9 +202,15 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                             // --- === button === ---
                             SizedBox(height: 10.h,),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                SizedBox(width: 1,),
                                 largeText(title: "Add New Image",fontWeight: FontWeight.w500),
+                                InkWell(
+                                    onTap: (){
+                                      Get.back();
+                                    },
+                                    child: Icon(CupertinoIcons.clear))
                               ],),
                             SizedBox(height: 60.h,),
                             // ------====--------------------------------------------------------------===-----
@@ -378,9 +387,15 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                       // --- === button === ---
                       SizedBox(height: 10.h,),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          SizedBox(width: 1,),
                           largeText(title: "Update New Image",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
                         ],),
                       SizedBox(height: 60.h,),
                       // ------====--------------------------------------------------------------===-----
