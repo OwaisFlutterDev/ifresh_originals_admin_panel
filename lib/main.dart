@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,8 +8,18 @@ import 'package:ifresh_originals_admin_panel/view/screens/home_screens/home_scre
 
 Future<void> main() async {
   // await Hive.initFlutter();
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: "AIzaSyAxs3OcDcw3TDHsTKRCOf1iDZrJIWLvjvg",
+      authDomain: "ifresh-originals.firebaseapp.com",
+      projectId: "ifresh-originals",
+      storageBucket: "ifresh-originals.appspot.com",
+      messagingSenderId: "1025870424779",
+      appId: "1:1025870424779:web:c8dfa3ef27d323aa19094e",
+      measurementId: "G-PCP4RCD1HX"
+    ),
+  );
   runApp(MyApp());
 }
 

@@ -14,6 +14,7 @@ class FormValidationController extends GetxController{
   late  TextEditingController passwordController, emailController;
 
 
+
   // --- ========= bool ======== ---
   bool isChecked = false;
 
@@ -26,6 +27,8 @@ class FormValidationController extends GetxController{
     passwordController = TextEditingController();
 
   }
+
+
 
 
 

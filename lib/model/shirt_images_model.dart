@@ -5,13 +5,14 @@ class ShirtImageModel {
   String? frontImage;
   String? backImage;
   String? shirtName;
-
+  String? shirtPrice;
 
   ShirtImageModel({
     this.id,
     this.frontImage,
     this.shirtName,
-    this.backImage
+    this.backImage,
+    this.shirtPrice
   });
 
   ShirtImageModel.fromDocumentSnapshot(DocumentSnapshot doc) {
@@ -19,7 +20,7 @@ class ShirtImageModel {
     frontImage = doc["frontImage"];
     shirtName = doc["shirtName"];
     backImage = doc["backImage"];
-
+    shirtPrice = doc["shirtPrice"];
   }
 
 }

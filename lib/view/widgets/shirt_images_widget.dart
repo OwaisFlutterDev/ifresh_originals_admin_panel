@@ -282,14 +282,13 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                                           color: blackColor,
                                         ),
                                         SizedBox(height: 10,),
-                                        // controller.frontShirtImage != null ? Container(
-                                        //     height: 100,
-                                        //   width: 120.w,
-                                        //   color: Colors.black45,
-                                        //   child: Image(image: FileImage(
-                                        //     controller.frontShirtImage!
-                                        //   ), height: 60.h,width: 120.w,)
-                                        // ) : Container(),
+                                        controller.frontShirtImage == null ? Container() :
+                                        Container(
+                                          height: 150,
+                                          width: 200.w,
+                                          color: Colors.transparent,
+                                          child: Image.memory(controller.frontShirtWeb)
+                                        ),
 
                                         SizedBox(height: 20,),
                                         commonButton(
@@ -326,7 +325,15 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                                             title: "Add Back Image",
                                             color: blackColor,
                                           ),
+                                          controller.backShirtImage == null ? Container() :
+                                          Container(
+                                              height: 150,
+                                              width: 200.w,
+                                              color: Colors.transparent,
+                                              child: Image.memory(controller.backShirtWeb)
+                                          ),
                                           SizedBox(height: 20,),
+
                                           commonButton(
                                               buttonName: "Add Image" ,
                                               onTap: (){
@@ -349,7 +356,15 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                             commonButton(
                                 buttonName: "Add",
                                 onTap: (){
-
+                                  if (controller.shirtImageFormKey.currentState!.validate() &&
+                                      controller.frontShirtImage != null &&  controller.backShirtImage != null)
+                                  {
+                                    controller.addShirtImages();
+                                  } else {
+                                    Get.snackbar("Add Shirt Data",
+                                        "Please Fill All The Fields.",
+                                        duration: Duration(seconds: 3));
+                                  }
                                 },
                                 buttonColor: redColor,
                                 textColor: whiteColor,

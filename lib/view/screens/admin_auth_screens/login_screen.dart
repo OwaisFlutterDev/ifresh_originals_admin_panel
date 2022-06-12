@@ -6,14 +6,13 @@ import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/constants/form_validator_constant.dart';
 import 'package:ifresh_originals_admin_panel/controller/form_validation_controller.dart';
 import 'package:ifresh_originals_admin_panel/controller/user_auth_controller.dart';
-import 'package:ifresh_originals_admin_panel/view/screens/home_screens/home_screen.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final FormValidationController _formValidationController = Get.put(FormValidationController());
+    final FormValidationController formValidationController = Get.put(FormValidationController());
     final UserAuthController userAuthController = Get.put(UserAuthController());
 
     return Scaffold(
@@ -50,100 +49,114 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment:  MainAxisAlignment.center,
                       children: [
                         Container(
-                          height: 0.68.sh,
+                          height: 0.70.sh,
                           width: 0.44.sw,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white,
                           ),
                           child: Padding(
-                            padding:  EdgeInsets.symmetric(vertical: 45.h, horizontal: 100.w),
-                            child: Column(
-                              children: [
-                                largeText(
-                                  title: "Sign In To Your Account",
-                                  fontWeight: FontWeight.w500
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                ),
-                                // ----=-=--- email form field ---=-=-----
-                                Container(
-                                  decoration:  BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:  BorderRadius.circular(40.0),
-                                      boxShadow: const [
-                                        BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.4)
-                                      ]
-                                  ),
-                                  child: commonTextFormField(
-                                    prefixIcon: Padding(
-                                      padding:  EdgeInsets.only(right: 15,left: 24),
-                                      child: Icon(CupertinoIcons.mail),
-                                    ),
-                                    hintText: "Email",
-                                    validator: FormValidatorConstant.emailValidator,
-                                    controller: _formValidationController.emailController
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                // ----=-=--- password form field ---=-=-----
-                                Container(
-                                  decoration:  BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:  BorderRadius.circular(40.0),
-                                      boxShadow: const [
-                                        BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.4)
-                                      ]),
-                                  child: commonTextFormField(
-                                      prefixIcon: Padding(
-                                        padding:  EdgeInsets.only(right: 15,left: 24),
-                                        child: Icon(CupertinoIcons.lock),
+                            padding:  EdgeInsets.symmetric( horizontal: 100.w),
+                            child: Form(
+                              key: formValidationController.logInFormKey,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              child:  Column(
+                                    children: [
+                                      SizedBox(height: 30,),
+                                      largeText(
+                                        title: "Sign In To Your Account",
+                                        fontWeight: FontWeight.w500
                                       ),
-                                      hintText: "Password",
-                                      validator: FormValidatorConstant.commonValidator,
-                                      controller: _formValidationController.passwordController,
-                                    obscureText: true,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                ),
-                                Row(
-                                  children: [
-                                    GetBuilder<FormValidationController>(
-                                        builder: (controller) {
-                                          return Checkbox(
-                                              value: controller.isChecked,
-                                              onChanged: (check)  {
-                                                controller.isChecked = check!;
-                                                controller.update();
+                                      SizedBox(
+                                        height: 50,
+                                      ),
+                                      // ----=-=--- email form field ---=-=-----
+                                      Container(
+                                        decoration:  BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:  BorderRadius.circular(40.0),
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.4)
+                                            ]
+                                        ),
+                                        child: commonTextFormField(
+                                          prefixIcon: Padding(
+                                            padding:  EdgeInsets.only(right: 15,left: 24),
+                                            child: Icon(CupertinoIcons.mail),
+                                          ),
+                                          hintText: "Email",
+                                          validator: FormValidatorConstant.emailValidator,
+                                          controller: formValidationController.emailController
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 40,
+                                      ),
+                                      // ----=-=--- password form field ---=-=-----
+                                      Container(
+                                        decoration:  BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:  BorderRadius.circular(40.0),
+                                            boxShadow: const [
+                                              BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.4)
+                                            ]),
+                                        child: commonTextFormField(
+                                            prefixIcon: Padding(
+                                              padding:  EdgeInsets.only(right: 15,left: 24),
+                                              child: Icon(CupertinoIcons.lock),
+                                            ),
+                                            hintText: "Password",
+                                            validator: FormValidatorConstant.commonValidator,
+                                            controller: formValidationController.passwordController,
+                                          obscureText: true,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GetBuilder<FormValidationController>(
+                                              builder: (controller) {
+                                                return Checkbox(
+                                                    value: controller.isChecked,
+                                                    onChanged: (check)  {
+                                                      controller.isChecked = check!;
+                                                      controller.update();
+                                                    }
+                                                );
                                               }
-                                          );
-                                        }
-                                    ),
-                                    smallText(
-                                      title: "    Remember me", color: Color(0xff393F45),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                // ----=-=--- login button ---=-=-----
-                                commonButton(
-                                  buttonHeight: 45,
-                                  buttonName: "Login",
-                                  buttonWidth: 1.sw,
-                                  onTap: (){
-                                    Get.to(() => HomeScreen());
-                                  },
-                                  buttonColor: redColor,
-                                  textColor: Colors.white
-                                )
-                              ],
+                                          ),
+                                          smallText(
+                                            title: "    Remember me", color: Color(0xff393F45),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 45,
+                                      ),
+                                      // ----=-=--- login button ---=-=-----
+                                      controller.loginBool ? CircularProgressIndicator() : commonButton(
+                                        buttonHeight: 45,
+                                        buttonName: "Login",
+                                        buttonWidth: 1.sw,
+                                        onTap: (){
+
+                                            if (formValidationController.logInFormKey.currentState!.validate()) {
+                                              userAuthController.signInThroughEmailAndPassword();
+                                            } else {
+                                              Get.snackbar("SignIn Notification",
+                                                  "Please Fill All The Fields",
+                                                  duration: Duration(seconds: 3));
+                                            }
+
+                                        },
+                                        buttonColor: redColor,
+                                        textColor: Colors.white
+                                      )
+                                    ],
+                                  )
+
                             ),
                           ),
                         ),
@@ -153,12 +166,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
+
                   ]),
             );
           })),

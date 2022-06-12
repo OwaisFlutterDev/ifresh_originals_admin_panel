@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/controller/home_controller.dart';
+import 'package:ifresh_originals_admin_panel/controller/user_auth_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget{
   HomeScreen({Key? key}) : super(key: key);
 
   final HomeController homeController = Get.put(HomeController());
+  final UserAuthController userAuthController = Get.put(UserAuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -107,18 +109,23 @@ class HomeScreen extends StatelessWidget{
                         bottom: 0,
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 25,
-                              ),
-                              Icon(CupertinoIcons.square_arrow_left,color: Colors.black54),
-                              SizedBox(width: 25,),
-                              smallText(
-                                title: "Logout",
-                                color: Colors.black54,
-                              )
-                            ],
+                          child: InkWell(
+                            onTap: (){
+                              userAuthController.logOut();
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 25,
+                                ),
+                                Icon(CupertinoIcons.square_arrow_left,color: Colors.black54),
+                                SizedBox(width: 25,),
+                                smallText(
+                                  title: "Logout",
+                                  color: Colors.black54,
+                                )
+                              ],
+                            ),
                           ),
                         ))
                   ],
