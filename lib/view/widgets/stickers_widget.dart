@@ -70,6 +70,7 @@ SizedBox stickerWidget(context) {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
+                                controller.editedStickerNameController.text = controller.stickerDataList[index].id.toString();
                                 return editStickerImagesAlertDialogWidget(
                                     id: controller.stickerDataList[index].id,
                                     stickerImage: controller.stickerDataList[index].stickerImage,
@@ -457,10 +458,16 @@ AlertDialog editStickerImagesAlertDialogWidget({String? id,String? stickerImage}
                         ),
                         //----===--------------------- add button ------------------------====-----
                         SizedBox(height: 85.h,),
-                        commonButton(
+                       controller.editStickerBool == true ? CircularProgressIndicator() : commonButton(
                           buttonName: "Update",
                           onTap: (){
-
+                            if (controller.editStickerImageFormKey.currentState!.validate()) {
+                              controller.updateStickerData(id!);
+                            } else {
+                              Get.snackbar("Update Sticker Data",
+                                  "Please Fill All The Fields",
+                                  duration: Duration(seconds: 3));
+                            }
                           },
                           buttonColor: redColor,
                           textColor: whiteColor,

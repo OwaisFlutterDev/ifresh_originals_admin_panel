@@ -147,7 +147,7 @@ class StickerController extends GetxController{
   }
 
   bool editStickerBool = false;
-  Future updateShirtImages(String id) async{
+  Future updateStickerData(String id) async{
     try {
       editStickerBool =true;
       update();
@@ -199,13 +199,12 @@ class StickerController extends GetxController{
         }).then((_) => print("Data Of shirt Is Updated "))
             .catchError((onError) => print(onError.toString()));
         editStickerBool = false;
-
         update();
 
         Get.back();
         Get.snackbar(
-          "Update Shirt Data Notification",
-          "Shirt Data Updated Successfully.",
+          "Update Sticker Data Notification",
+          "Sticker Data Updated Successfully.",
           snackPosition: SnackPosition.TOP,
           duration: Duration(seconds: 5),
         );
