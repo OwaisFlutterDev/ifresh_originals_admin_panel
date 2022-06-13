@@ -70,7 +70,7 @@ SizedBox stickerWidget(context) {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                controller.editedStickerNameController.text = controller.stickerDataList[index].id.toString();
+                                controller.editedStickerNameController.text = controller.stickerDataList[index].stickerName.toString();
                                 return editStickerImagesAlertDialogWidget(
                                     id: controller.stickerDataList[index].id,
                                     stickerImage: controller.stickerDataList[index].stickerImage,

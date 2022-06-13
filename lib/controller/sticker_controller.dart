@@ -170,7 +170,6 @@ class StickerController extends GetxController{
           duration: Duration(seconds: 5),
         );
       }
-
       else{
         print("2");
         String backSIUrl;
