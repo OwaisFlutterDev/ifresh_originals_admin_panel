@@ -65,7 +65,16 @@ SizedBox stickerWidget(context) {
                     return stickerItemWidget(
                         image: controller.stickerDataList[index].stickerImage,
                         shirtName: controller.stickerDataList[index].stickerName,
-                        onDelete: (){},
+                        onDelete: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+
+                                return deleteStickerImagesAlertDialogWidget(
+                                    id:  controller.stickerDataList[index].id
+                                );
+                              });
+                        },
                         onEdit: (){
                           showDialog(
                               context: context,
@@ -476,6 +485,62 @@ AlertDialog editStickerImagesAlertDialogWidget({String? id,String? stickerImage}
                         ),
 
                       ]);
+                }
+            );
+          })
+  );
+}
+
+// ------====--------------------------------------------------------------===-----
+// ---------------   ==-= =--------= Delete Shirt Images AlertDialog Widget =--------= =-== -------------
+// ------====--------------------------------------------------------------===-----
+AlertDialog deleteStickerImagesAlertDialogWidget({String? id}) {
+  return AlertDialog(
+      scrollable: true,
+      alignment: Alignment.center,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+              Radius.circular(15))),
+      backgroundColor: bgColor,
+      insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+      content: Builder(
+          builder: (context) {
+            return GetBuilder<StickerController>(
+                init: StickerController(),
+                builder: (controller) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 10.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 1,),
+                          largeText(title: "Delete Sticker Data",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
+                        ],),
+                      SizedBox(height: 23),
+                      smallText(
+                        title: "Are you sure you want to delete the Sticker Data?",
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 50),
+                      controller.deleteBool == true ? CircularProgressIndicator() :
+                      commonButton(
+                        buttonName: "Delete",
+                        onTap: (){
+                          controller.deleteSticker(id!);
+                        },
+                        buttonColor: redColor,
+                        textColor: whiteColor,
+                        buttonWidth: 250,
+                        buttonHeight: 40,
+                      ),
+                    ],
+                  );
                 }
             );
           })

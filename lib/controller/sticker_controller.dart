@@ -189,9 +189,9 @@ class StickerController extends GetxController{
 
         backSIUrl = await firebaseStorageReff.getDownloadURL();
 
-        final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
+        final docData = FirebaseFirestore.instance.collection('stickers').doc(id);
         await docData.update({
-          // "frontImage": frontSIUrl,
+
           "stickerImage": backSIUrl,
           "stickerName": editedStickerNameController.text,
 
@@ -216,5 +216,48 @@ class StickerController extends GetxController{
       update();
     }
   }
+
+  // ==============================================================================
+  // -------------- ===========    Delete Stickers    ========== --------------
+  //         =========================================================================
+
+  bool deleteBool = false;
+  Future deleteSticker(String id) async{
+    deleteBool = true;
+    update();
+    successMsg(){
+      Get.back();
+      Get.snackbar(
+        "Delete Sticker Notification",
+        "The Sticker Data is Deleted Successfully: ",
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 4),
+      );
+    }
+
+    try {
+
+      final collection = FirebaseFirestore.instance.collection('stickers');
+      await collection
+          .doc(id) // <-- Doc ID to be deleted.
+          .delete() // <-- Delete
+          .then((_) => successMsg())
+          .catchError((error) => print('Delete failed: $error'));
+
+      deleteBool = false;
+      update();
+    }
+    catch (error){
+      // Get.snackbar(
+      //   "Delete Stickers Notification",
+      //   "Check Your Internet Connection",
+      //   snackPosition: SnackPosition.TOP,
+      //   duration: Duration(seconds: 3),
+      // );
+      deleteBool = false;
+      update();
+    }
+  }
+
 
 }

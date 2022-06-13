@@ -70,7 +70,17 @@ Widget shirtWidget(context) {
                     return shirtImageItemWidget(
                         image: shirtImagesController.shirtsDataList[index].frontImage,
                         shirtName: shirtImagesController.shirtsDataList[index].shirtName,
-                        deleteButton: (){},
+                        deleteButton: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+
+                                return deleteShirtImagesAlertDialogWidget(
+                                    id:  shirtImagesController.shirtsDataList[index].id
+                                );
+                              });
+
+                        },
                         editButton: (){
                           showDialog(
                               context: context,
@@ -634,6 +644,62 @@ AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backIm
 
                     ]);
               }
+            );
+          })
+  );
+}
+
+// ------====--------------------------------------------------------------===-----
+// ---------------   ==-= =--------= Delete Shirt Images AlertDialog Widget =--------= =-== -------------
+// ------====--------------------------------------------------------------===-----
+AlertDialog deleteShirtImagesAlertDialogWidget({String? id}) {
+  return AlertDialog(
+      scrollable: true,
+      alignment: Alignment.center,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+              Radius.circular(15))),
+      backgroundColor: bgColor,
+      insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+      content: Builder(
+          builder: (context) {
+            return GetBuilder<ShirtImagesController>(
+                init: ShirtImagesController(),
+                builder: (controller) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 10.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 1,),
+                          largeText(title: "Delete Shirt Data",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
+                        ],),
+                      SizedBox(height: 23),
+                      smallText(
+                        title: "Are you sure you want to delete the Shirt Data?",
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 50),
+                      controller.deleteBool == true ? CircularProgressIndicator() :
+                      commonButton(
+                        buttonName: "Delete",
+                        onTap: (){
+                          controller.deleteShirt(id!);
+                        },
+                        buttonColor: redColor,
+                        textColor: whiteColor,
+                        buttonWidth: 250,
+                        buttonHeight: 40,
+                      ),
+                    ],
+                  );
+                }
             );
           })
   );

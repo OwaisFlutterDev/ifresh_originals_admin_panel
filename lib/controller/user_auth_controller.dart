@@ -145,6 +145,7 @@ class UserAuthController extends GetxController {
         Map<String, dynamic> data = queryDocumentSnapshot.data();
         email = data["email"];
       }
+
       if (email.isNotEmpty) {
         loginBool = false;
         // --==============================================================--

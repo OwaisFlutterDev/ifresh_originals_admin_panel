@@ -368,4 +368,48 @@ class ShirtImagesController extends GetxController{
       update();
     }
   }
+
+
+  // ==============================================================================
+  // -------------- ===========    Delete Shirts    ========== --------------
+  //         =========================================================================
+
+  bool deleteBool = false;
+  Future deleteShirt(String id) async{
+    deleteBool = true;
+    update();
+    successMsg(){
+      Get.back();
+      Get.snackbar(
+        "Delete Shirts Notification",
+        "The Shirts Data is Deleted Successfully: ",
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 4),
+      );
+    }
+
+    try {
+
+      final collection = FirebaseFirestore.instance.collection('shirts');
+      await collection
+          .doc(id) // <-- Doc ID to be deleted.
+          .delete() // <-- Delete
+          .then((_) => successMsg())
+          .catchError((error) => print('Delete failed: $error'));
+
+      deleteBool = false;
+      update();
+    }
+    catch (error){
+      // Get.snackbar(
+      //   "Delete Stickers Notification",
+      //   "Check Your Internet Connection",
+      //   snackPosition: SnackPosition.TOP,
+      //   duration: Duration(seconds: 3),
+      // );
+      deleteBool = false;
+      update();
+    }
+  }
+
 }
