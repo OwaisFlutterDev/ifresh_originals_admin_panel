@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/controller/home_controller.dart';
+import 'package:ifresh_originals_admin_panel/controller/shirt_images_controller.dart';
 import 'package:ifresh_originals_admin_panel/controller/user_auth_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatelessWidget{
 
   final HomeController homeController = Get.put(HomeController());
   final UserAuthController userAuthController = Get.put(UserAuthController());
+  // final ShirtImagesController shirtImagesController = Get.put(ShirtImagesController());
 
   @override
   Widget build(BuildContext context) {

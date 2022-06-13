@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +9,9 @@ import 'package:ifresh_originals_admin_panel/constants/form_validator_constant.d
 import 'package:ifresh_originals_admin_panel/controller/shirt_images_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
+
 Widget shirtWidget(context) {
+ final ShirtImagesController shirtImagesController = Get.put(ShirtImagesController());
   return SizedBox(
     width: 1.sw,
     height: 1.sh,
@@ -32,14 +36,16 @@ Widget shirtWidget(context) {
                   buttonName: "Add New Shirt",
                   buttonColor: redColor,
                   buttonWidth: 150,
-                  buttonHeight: 60.h,
+                  buttonHeight: 37,
                   textColor: whiteColor,
-                  textSize: 20.sp,
+                  textSize: 12,
                   onTap: (){
+
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return addShirtImagesAlertDialogWidget();
+                          return addShirtImagesAlertDialogWidget(
+                          );
                         });
                   }
                 )
@@ -49,29 +55,38 @@ Widget shirtWidget(context) {
             SizedBox(
               height: 25,
             ),
-            GridView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 250,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
-                itemCount: 5,
-                itemBuilder: (BuildContext ctx, index) {
-                  return shirtImageItemWidget(
-                    image: "assets/Hoodie0.png",
-                    shirtName: "Adult Log Sleeves",
-                    deleteButton: (){},
-                    editButton: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return editShirtImagesAlertDialogWidget();
-                          });
-                    }
-                );
-              },
+            Obx(() =>
+                GridView.builder(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 250,
+                      childAspectRatio: 0.78,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  itemCount: shirtImagesController.shirtsDataList.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    return shirtImageItemWidget(
+                        image: shirtImagesController.shirtsDataList[index].frontImage,
+                        shirtName: shirtImagesController.shirtsDataList[index].shirtName,
+                        deleteButton: (){},
+                        editButton: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                shirtImagesController.editedShirtNameController.text = shirtImagesController.shirtsDataList[index].shirtName.toString();
+                                shirtImagesController.editedShirtPriceController.text = shirtImagesController.shirtsDataList[index].shirtPrice.toString();
+
+                                return editShirtImagesAlertDialogWidget(
+                                   frontImage:  shirtImagesController.shirtsDataList[index].frontImage,
+                                   backImage: shirtImagesController.shirtsDataList[index].backImage,
+                                  id:  shirtImagesController.shirtsDataList[index].id
+                                );
+                              });
+                        }
+                    );
+                  },
+                ),
             ),
             SizedBox(
               height: 40,
@@ -106,17 +121,19 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
 
           // -=-== ------ image ------ -=-==
           Container(
-            width: 120.w,
+            // width: 120.w,
             decoration: BoxDecoration(
               color: bgColor,
               shape: BoxShape.circle,
-              // image: DecorationImage(image: AssetImage("assets/Asset 80.png",),),
+               // image: DecorationImage(image: NetworkImage(image!,),),
             ),
             child: Padding(
-              padding:  EdgeInsets.all(15.r),
-              child: Image(
-                image: AssetImage(image!), height: 170.h, width: 90.w, fit: BoxFit.scaleDown,
-              ),
+              padding:  EdgeInsets.all(10),
+              child: Image.network(image!,height: 120, width: 150, fit: BoxFit.scaleDown,)
+
+              // Image(
+              //   image: NetworkImage(image!), height: 120, width: 150, fit: BoxFit.scaleDown,
+              // ),
             ),
           ),
 
@@ -128,7 +145,7 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
               title: shirtName,
               textStyle: TextStyle(
                   color: Colors.black87,
-                  fontSize: 20.sp,
+                  fontSize: 13,
               )
           ),
           // SizedBox(
@@ -141,8 +158,8 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
               InkWell(
                 onTap: editButton,
                 child: Container(
-                   height: 45.h,
-                    width: 45.w,
+                   height: 28,
+                    width: 28,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -150,15 +167,15 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
                         BoxShadow(color: Colors.black26, blurRadius: 4.0, spreadRadius: 0.3)
                       ]
                   ),
-                  child: Center(child: Icon(Icons.edit,size: 30.r,)),
+                  child: Center(child: Icon(Icons.edit,size: 18,)),
                 ),
               ),
 
               InkWell(
                 onTap: deleteButton,
                 child: Container(
-                  height: 45.h,
-                  width: 45.w,
+                  height: 28,
+                  width: 28,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -166,7 +183,7 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
                         BoxShadow(color: Colors.black26, blurRadius: 4.0, spreadRadius: 0.3)
                       ]
                   ),
-                  child: Center(child: Icon(CupertinoIcons.delete,size: 30.r,color: redColor,)),
+                  child: Center(child: Icon(CupertinoIcons.delete,size: 18,color: redColor,)),
                 ),
               )
             ],
@@ -325,6 +342,7 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                                             title: "Add Back Image",
                                             color: blackColor,
                                           ),
+                                          SizedBox(height: 10,),
                                           controller.backShirtImage == null ? Container() :
                                           Container(
                                               height: 150,
@@ -353,7 +371,7 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                             ),
                             //----===--------------------- add button ------------------------====-----
                             SizedBox(height: 85.h,),
-                            commonButton(
+                            controller.addShirtBool ? CircularProgressIndicator() :  commonButton(
                                 buttonName: "Add",
                                 onTap: (){
                                   if (controller.shirtImageFormKey.currentState!.validate() &&
@@ -382,7 +400,7 @@ AlertDialog addShirtImagesAlertDialogWidget() {
 // ------====--------------------------------------------------------------===-----
 // ---------------   ==-= =--------= Add Shirt Images Alert Dialog Widget =--------= =-== -------------
 // ------====--------------------------------------------------------------===-----
-AlertDialog editShirtImagesAlertDialogWidget() {
+AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backImage, String? id}) {
   return AlertDialog(
       scrollable: true,
       alignment: Alignment.center,
@@ -408,6 +426,11 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                           largeText(title: "Update New Image",fontWeight: FontWeight.w500),
                           InkWell(
                               onTap: (){
+                                // controller.editFrontShirtImage!.delete();
+                                // controller.editBackShirtImage!.delete();
+                                // controller.editFrontShirtWeb.clear();
+                                // controller.editBackShirtWeb.clear();
+                                // controller.update();
                                 Get.back();
                               },
                               child: Icon(CupertinoIcons.clear))
@@ -452,7 +475,7 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                               child: commonTextFormField(
                                 hintText: "Shirt Price",
                                 validator: FormValidatorConstant.commonValidator,
-                                controller: controller.shirtPriceController
+                                controller: controller.editedShirtPriceController
                               ),
                             ),
                           ],),
@@ -480,6 +503,34 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                                     smallText(
                                       title: "Update Front Image",
                                       color: blackColor,
+                                    ),
+                                    SizedBox(height: 10,),
+                                    // controller.backShirtImage == null ? Container() :
+                                   controller.editFrontShirtImage != null ? Column(
+                                     children: [
+                                       Row(
+                                         mainAxisAlignment: MainAxisAlignment.end,
+                                         children: [
+                                           InkWell(
+                                           onTap: (){
+                                             controller.editFrontShirtImage = null;
+                                             controller.update();
+                                           },
+                                           child: Icon(CupertinoIcons.multiply)),
+                                         ],
+                                       ),
+                                       Container(
+                                           height: 150,
+                                           width: 200.w,
+                                           color: Colors.transparent,
+                                           child: Image.memory(controller.editFrontShirtWeb)
+                                       ),
+                                     ],
+                                   ) : Container(
+                                        height: 150,
+                                        width: 200.w,
+                                        color: Colors.transparent,
+                                        child: Image.network(frontImage!)
                                     ),
                                     SizedBox(height: 20,),
                                     commonButton(
@@ -516,6 +567,34 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                                       title: "Update Back Image",
                                       color: blackColor,
                                     ),
+                                    SizedBox(height: 10,),
+                                    // controller.backShirtImage == null ? Container() :
+                                    controller.editBackShirtImage != null ? Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                                onTap: (){
+                                                  controller.editBackShirtImage = null;
+                                                  controller.update();
+                                                },
+                                                child: Icon(CupertinoIcons.multiply)),
+                                          ],
+                                        ),
+                                        Container(
+                                            height: 150,
+                                            width: 200.w,
+                                            color: Colors.transparent,
+                                            child: Image.memory(controller.editBackShirtWeb)
+                                        ),
+                                      ],
+                                    ) : Container(
+                                        height: 150,
+                                        width: 200.w,
+                                        color: Colors.transparent,
+                                        child: Image.network(backImage!)
+                                    ),
                                     SizedBox(height: 20,),
                                     commonButton(
                                         buttonName: "Update Image" ,
@@ -536,10 +615,11 @@ AlertDialog editShirtImagesAlertDialogWidget() {
                       ),
                       //----===--------------------- add button ------------------------====-----
                       SizedBox(height: 85.h,),
+                      controller.editShirtBool == true ? CircularProgressIndicator() :
                       commonButton(
                         buttonName: "Update",
                         onTap: (){
-
+                            controller.updateShirtImages(id!);
                         },
                         buttonColor: redColor,
                         textColor: whiteColor,

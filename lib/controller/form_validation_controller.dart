@@ -12,7 +12,8 @@ class FormValidationController extends GetxController{
 
   //   ----- ========== Text Editing Controller ========== -----
   late  TextEditingController passwordController, emailController;
-
+                             // editedShirtNameController, editedShirtPriceController,
+                             // shirtNameController, shirtPriceController ;
 
 
   // --- ========= bool ======== ---
@@ -25,6 +26,11 @@ class FormValidationController extends GetxController{
 
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    //
+    // editedShirtNameController = TextEditingController();
+    // editedShirtPriceController = TextEditingController();
+    // shirtNameController = TextEditingController();
+    // shirtPriceController = TextEditingController();
 
   }
 
@@ -35,6 +41,11 @@ class FormValidationController extends GetxController{
   void clearTextField(){
     emailController.clear();
     passwordController.clear();
+
+    // editedShirtNameController.clear();
+    // editedShirtPriceController.clear();
+    // shirtNameController.clear();
+    // shirtPriceController.clear();
   }
 
 }

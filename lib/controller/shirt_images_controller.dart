@@ -13,9 +13,10 @@ class ShirtImagesController extends GetxController{
   final GlobalKey<FormState> editShirtImageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> shirtImageFormKey = GlobalKey<FormState>();
 
-
   late TextEditingController editedShirtNameController, editedShirtPriceController,
                              shirtNameController, shirtPriceController ;
+  CollectionReference collectionReference = FirebaseFirestore.instance.collection("shirts");
+  RxList<ShirtImageModel> shirtsDataList = RxList<ShirtImageModel>([]);
 
   @override
   void onInit() {
@@ -26,6 +27,8 @@ class ShirtImagesController extends GetxController{
 
     shirtNameController = TextEditingController();
     shirtPriceController = TextEditingController();
+
+    shirtsDataList.bindStream(getShirtData());
 
   }
 
@@ -70,19 +73,25 @@ class ShirtImagesController extends GetxController{
   }
 
 
-
+  bool addShirtBool = false;
   Future addShirtImages() async{
     try {
+      addShirtBool =true;
+      update();
       if (frontShirtImage != null && backShirtImage != null) {
         String frontSIUrl;
         String backSIUrl;
 
         // ----------------- store and get front shirt image url ----------------
+
         String frontShirtImageString = basename(frontShirtImage!.path);
 
         Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(
-            'shirts_images/$frontShirtImageString');
-        UploadTask uploadTask = firebaseStorageRef.putFile(frontShirtImage!);
+            'shirts_images/$frontShirtImageString.png' );
+        UploadTask uploadTask = firebaseStorageRef.putData(
+           frontShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
 
         await uploadTask.whenComplete(() => () { print("Upload Complete"); });
 
@@ -90,11 +99,15 @@ class ShirtImagesController extends GetxController{
         // String? fireStoreUserImage = userProfileModel.image;
 
         // ----------------- store and get back shirt image url ----------------
+
         String backShirtImageString = basename(backShirtImage!.path);
 
         Reference firebaseStorageReff = FirebaseStorage.instance.ref().child(
-            'shirts_images/$backShirtImageString');
-        UploadTask uploadTaskk = firebaseStorageReff.putFile(backShirtImage!);
+            'shirts_images/$backShirtImageString.png');
+        UploadTask uploadTaskk = firebaseStorageReff.putData(
+          backShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
 
         await uploadTaskk.whenComplete(() => () { print("Upload Complete"); });
 
@@ -110,14 +123,35 @@ class ShirtImagesController extends GetxController{
 
         }).then((_) => print("Data Of shirt Is Added to Firestore "))
             .catchError((onError) => print(onError.toString()));
+        addShirtBool = false;
+        frontShirtImage = null;
+        backShirtImage = null;
+        update();
+
+        Get.back();
+        Get.snackbar(
+          "Add Shirt Notification",
+          "Shirt Data Added Successfully.",
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 5),
+        );
       }
     }
       catch (e) {
       print(e);
+      addShirtBool = false;
+      update();
     }
   }
 
+  // ------====--------------------------------------------------------------===-----
+  // ---------------   ==-= =--------= Get Shirt Images Data =--------= =-== -------------
+  // ------====--------------------------------------------------------------===-----
 
+  Stream<List<ShirtImageModel>> getShirtData() =>
+      collectionReference.snapshots().map((query) =>
+          query.docs.map((item) =>
+              ShirtImageModel.fromDocumentSnapshot(item)).toList());
 
 
   // ------====--------------------------------------------------------------===-----
@@ -125,23 +159,213 @@ class ShirtImagesController extends GetxController{
   // ------====--------------------------------------------------------------===-----
 
 
-
-
   File? editFrontShirtImage;
+  File? editBackShirtImage;
+
+  Uint8List editFrontShirtWeb = Uint8List(8);
+  Uint8List editBackShirtWeb = Uint8List(8);
+
+
   //  ---------------- get the first shirt image from the gallery ---------------------
   void getEditFrontShirtImage() async {
     final picker = ImagePicker();
-    final img = await picker.pickImage(source: ImageSource.gallery);
+    XFile? img = await picker.pickImage(source: ImageSource.gallery);
     editFrontShirtImage = File(img!.path);
+    if(img != null){
+      var i = await img.readAsBytes();
+      editFrontShirtWeb = i;
+      update();
+    }else{
+      print("No Image Picked");
+    }
     update();
   }
 
-  File? editBackShirtImage;
   //  ---------------- get the second shirt image from the gallery ---------------------
   void getEditBackShirtImage() async {
     final picker = ImagePicker();
-    final img = await picker.pickImage(source: ImageSource.gallery);
+    XFile? img = await picker.pickImage(source: ImageSource.gallery);
     editBackShirtImage = File(img!.path);
+    if(img != null){
+      var i = await img.readAsBytes();
+      editBackShirtWeb = i;
+      update();
+    }else{
+      print("No Image Picked");
+    }
     update();
+  }
+
+
+  bool editShirtBool = false;
+  Future updateShirtImages(String id) async{
+    try {
+      editShirtBool =true;
+      update();
+      if (editFrontShirtImage == null && editBackShirtImage == null) {
+        print("1");
+        final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
+        await docData.update({
+          "shirtName": editedShirtNameController.text,
+          "shirtPrice": editedShirtPriceController.text,
+
+        }).then((_) => print("Data Of shirt Is Updated "))
+            .catchError((onError) => print(onError.toString()));
+        editShirtBool = false;
+        update();
+
+        Get.back();
+        Get.snackbar(
+          "Update Shirt Data Notification",
+          "Shirt Data Updated Successfully.",
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 5),
+        );
+      }
+      else if(editFrontShirtImage != null && editBackShirtImage != null) {
+        print("2");
+        String frontSIUrl;
+        String backSIUrl;
+
+        // ----------------- store and get front shirt image url ----------------
+
+        String frontShirtImageString = basename(editFrontShirtImage!.path);
+
+        Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(
+            'shirts_images/$frontShirtImageString.png' );
+        UploadTask uploadTask = firebaseStorageRef.putData(
+          editFrontShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
+
+        await uploadTask.whenComplete(() => () { print("Upload Complete"); });
+
+        frontSIUrl = await firebaseStorageRef.getDownloadURL();
+        // String? fireStoreUserImage = userProfileModel.image;
+
+        // ----------------- store and get back shirt image url ----------------
+
+        String backShirtImageString = basename(editBackShirtImage!.path);
+
+        Reference firebaseStorageReff = FirebaseStorage.instance.ref().child(
+            'shirts_images/$backShirtImageString.png');
+        UploadTask uploadTaskk = firebaseStorageReff.putData(
+          editBackShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
+
+        await uploadTaskk.whenComplete(() => () { print("Upload Complete"); });
+
+        backSIUrl = await firebaseStorageReff.getDownloadURL();
+
+
+        final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
+        await docData.update({
+          "frontImage": frontSIUrl,
+          "backImage": backSIUrl,
+          "shirtName": editedShirtNameController.text,
+          "shirtPrice": editedShirtPriceController.text,
+
+        }).then((_) => print("Data Of shirt Is Updated "))
+            .catchError((onError) => print(onError.toString()));
+        editShirtBool = false;
+        update();
+
+        Get.back();
+        Get.snackbar(
+          "Update Shirt Data Notification",
+          "Shirt Data Updated Successfully.",
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 5),
+        );
+
+      }
+      else if(editFrontShirtImage != null) {
+        print("3");
+        String frontSIUrl;
+
+        // ----------------- store and get front shirt image url ----------------
+
+        String frontShirtImageString = basename(editFrontShirtImage!.path);
+
+        Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(
+            'shirts_images/$frontShirtImageString.png' );
+        UploadTask uploadTask = firebaseStorageRef.putData(
+          editFrontShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
+
+        await uploadTask.whenComplete(() => () { print("Upload Complete"); });
+
+        frontSIUrl = await firebaseStorageRef.getDownloadURL();
+
+        final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
+        await docData.update({
+          "frontImage": frontSIUrl,
+          //   "backImage": backSIUrl,
+          "shirtName": editedShirtNameController.text,
+          "shirtPrice": editedShirtPriceController.text,
+
+        }).then((_) => print("Data Of shirt Is Updated "))
+            .catchError((onError) => print(onError.toString()));
+        editShirtBool = false;
+        update();
+
+        Get.back();
+        Get.snackbar(
+          "Update Shirt Data Notification",
+          "Shirt Data Updated Successfully.",
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 5),
+        );
+
+      }
+      else{
+        print("4");
+        String backSIUrl;
+
+        // ----------------- store and get back shirt image url ----------------
+
+        String backShirtImageString = basename(editBackShirtImage!.path);
+
+        Reference firebaseStorageReff = FirebaseStorage.instance.ref().child(
+            'shirts_images/$backShirtImageString.png');
+        UploadTask uploadTaskk = firebaseStorageReff.putData(
+          editBackShirtWeb,
+          SettableMetadata(contentType: 'image/png'),
+        );
+
+        await uploadTaskk.whenComplete(() => () { print("Upload Complete"); });
+
+        backSIUrl = await firebaseStorageReff.getDownloadURL();
+
+        final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
+        await docData.update({
+          // "frontImage": frontSIUrl,
+          "backImage": backSIUrl,
+          "shirtName": editedShirtNameController.text,
+          "shirtPrice": editedShirtPriceController.text,
+
+        }).then((_) => print("Data Of shirt Is Updated "))
+            .catchError((onError) => print(onError.toString()));
+        editShirtBool = false;
+
+        update();
+
+        Get.back();
+        Get.snackbar(
+          "Update Shirt Data Notification",
+          "Shirt Data Updated Successfully.",
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 5),
+        );
+      }
+
+    }
+    catch (e) {
+      print(e);
+      editShirtBool = false;
+      update();
+    }
   }
 }

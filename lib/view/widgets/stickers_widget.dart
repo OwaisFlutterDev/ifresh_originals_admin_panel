@@ -32,9 +32,9 @@ SizedBox stickerWidget(context) {
                     buttonName: "Add New Sticker",
                     buttonColor: redColor,
                     buttonWidth: 150,
-                    buttonHeight: 60.h,
+                    buttonHeight: 37,
                     textColor: whiteColor,
-                    textSize: 20.sp,
+                    textSize: 12,
                     onTap: (){
                       showDialog(
                           context: context,
@@ -54,7 +54,7 @@ SizedBox stickerWidget(context) {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 250,
-                  childAspectRatio: 1.2,
+                  childAspectRatio: 0.94,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20),
               itemCount: 5,
@@ -102,16 +102,15 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
 
           // -=-== ------ image ------ -=-==
           Container(
-            width: 120.w,
             decoration: BoxDecoration(
               color: bgColor,
               shape: BoxShape.circle,
               // image: DecorationImage(image: AssetImage("assets/Asset 80.png",),),
             ),
             child: Padding(
-              padding:  EdgeInsets.all(15.r),
+              padding:  EdgeInsets.all(5),
               child: Image(
-                image: AssetImage(image!), height: 90.h, width: 90.w, fit: BoxFit.scaleDown,
+                image: AssetImage(image!), height: 75, width: 75, fit: BoxFit.scaleDown,
               ),
             ),
           ),
@@ -121,7 +120,7 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
               title: shirtName,
               textStyle: TextStyle(
                 color: Colors.black87,
-                fontSize: 16.sp,
+                fontSize: 13,
               )
           ),
           // SizedBox(
@@ -134,8 +133,8 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
               InkWell(
                 onTap: onEdit,
                 child: Container(
-                  height: 45.h,
-                  width: 45.w,
+                  height: 28,
+                  width: 28,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -143,15 +142,15 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
                         BoxShadow(color: Colors.black26, blurRadius: 4.0, spreadRadius: 0.3)
                       ]
                   ),
-                  child: Center(child: Icon(Icons.edit,size: 25.r,)),
+                  child: Center(child: Icon(Icons.edit,size: 18,)),
                 ),
               ),
-              SizedBox(width: 8,),
+              SizedBox(width: 30,),
               InkWell(
                 onTap: onDelete,
                 child: Container(
-                  height: 45.h,
-                  width: 45.w,
+                  height: 28,
+                  width: 28,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -159,7 +158,7 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
                         BoxShadow(color: Colors.black26, blurRadius: 4.0, spreadRadius: 0.3)
                       ]
                   ),
-                  child: Center(child: Icon(CupertinoIcons.delete,size: 25.r,color: redColor,)),
+                  child: Center(child: Icon(CupertinoIcons.delete,size: 18,color: redColor,)),
                 ),
               )
             ],

@@ -51,5 +51,4 @@ class StickerController extends GetxController{
   }
 
 
-
 }

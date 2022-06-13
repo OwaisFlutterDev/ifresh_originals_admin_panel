@@ -31,13 +31,13 @@ Widget headerThree({String? title,Color? color,FontWeight? fontWeight }) {
 //  --------- ======================= Large Text ======================  ---------
 Widget  largeText({String? title,Color? color,FontWeight? fontWeight }) {
   return Text(title ?? "" , style: GoogleFonts.poppins(textStyle: TextStyle(
-    color: color, fontSize: 31.sp,fontWeight: fontWeight,)),);
+    color: color, fontSize: 20,fontWeight: fontWeight,)),);
 }
 
 //  --------- ======================= Small Text ======================  ---------
 Widget smallText({String? title,Color? color,FontWeight? fontWeight, TextAlign? textAlign}) {
   return Text(title ?? "" , style: GoogleFonts.poppins(textStyle: TextStyle(
-    color: color, fontSize: 20.sp,fontWeight: fontWeight,)),textAlign: textAlign,);
+    color: color, fontSize: 13,fontWeight: fontWeight,)),textAlign: textAlign,);
 }
 
 
