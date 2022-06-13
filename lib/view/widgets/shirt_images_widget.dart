@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/constants/form_validator_constant.dart';
+import 'package:ifresh_originals_admin_panel/controller/form_validation_controller.dart';
 import 'package:ifresh_originals_admin_panel/controller/shirt_images_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
@@ -401,6 +402,7 @@ AlertDialog addShirtImagesAlertDialogWidget() {
 // ---------------   ==-= =--------= Add Shirt Images Alert Dialog Widget =--------= =-== -------------
 // ------====--------------------------------------------------------------===-----
 AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backImage, String? id}) {
+
   return AlertDialog(
       scrollable: true,
       alignment: Alignment.center,
@@ -426,11 +428,6 @@ AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backIm
                           largeText(title: "Update New Image",fontWeight: FontWeight.w500),
                           InkWell(
                               onTap: (){
-                                // controller.editFrontShirtImage!.delete();
-                                // controller.editBackShirtImage!.delete();
-                                // controller.editFrontShirtWeb.clear();
-                                // controller.editBackShirtWeb.clear();
-                                // controller.update();
                                 Get.back();
                               },
                               child: Icon(CupertinoIcons.clear))
@@ -599,7 +596,15 @@ AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backIm
                                     commonButton(
                                         buttonName: "Update Image" ,
                                         onTap: (){
-                                          controller.getEditBackShirtImage();
+
+                                          if (controller.editShirtImageFormKey.currentState!.validate()) {
+                                            controller.getEditBackShirtImage();
+                                          } else {
+                                            Get.snackbar("Update Shirt Data",
+                                                "Please Fill All The Fields",
+                                                duration: Duration(seconds: 3));
+                                          }
+
                                         },
                                         buttonColor: redColor,
                                         textColor: whiteColor,

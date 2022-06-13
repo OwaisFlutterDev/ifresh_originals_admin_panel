@@ -17,66 +17,75 @@ SizedBox stickerWidget(context) {
           vertical: 20.h
       ),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: GetBuilder<StickerController>(
+          init: StickerController(),
+          builder: (controller) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                largeText(
-                    title: "Sticker",
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    largeText(
+                        title: "Sticker",
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600
+                    ),
+                    commonButton(
+                        buttonName: "Add New Sticker",
+                        buttonColor: redColor,
+                        buttonWidth: 150,
+                        buttonHeight: 37,
+                        textColor: whiteColor,
+                        textSize: 12,
+                        onTap: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return addStickerImagesAlertDialogWidget();
+                              });
+                        }
+                    )
+                  ],
                 ),
-                commonButton(
-                    buttonName: "Add New Sticker",
-                    buttonColor: redColor,
-                    buttonWidth: 150,
-                    buttonHeight: 37,
-                    textColor: whiteColor,
-                    textSize: 12,
-                    onTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return addStickerImagesAlertDialogWidget();
-                          });
-                    }
+
+                SizedBox(
+                  height: 25,
+                ),
+                Obx(() => GridView.builder(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 250,
+                      childAspectRatio: 0.94,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  itemCount: controller.stickerDataList.length,
+                  itemBuilder: (BuildContext ctx, index) {
+                    return stickerItemWidget(
+                        image: controller.stickerDataList[index].stickerImage,
+                        shirtName: controller.stickerDataList[index].stickerName,
+                        onDelete: (){},
+                        onEdit: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return editStickerImagesAlertDialogWidget(
+                                    id: controller.stickerDataList[index].id,
+                                    stickerImage: controller.stickerDataList[index].stickerImage,
+                                );
+                              });
+                        }
+                    );
+                  },
+                ),),
+
+                SizedBox(
+                  height: 40,
                 )
               ],
-            ),
-
-            SizedBox(
-              height: 25,
-            ),
-            GridView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 250,
-                  childAspectRatio: 0.94,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20),
-              itemCount: 5,
-              itemBuilder: (BuildContext ctx, index) {
-                return stickerItemWidget(
-                    image: "assets/Asset 240.png",
-                    shirtName: "Lorem Ipsum",
-                    onDelete: (){},
-                    onEdit: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return editStickerImagesAlertDialogWidget();
-                          });
-                    }
-                );
-              },
-            ),
-            SizedBox(
-              height: 40,
-            )
-          ],
+            );
+          }
         ),
       ),
     ),
@@ -110,7 +119,7 @@ Widget stickerItemWidget({String? image, String? shirtName, void Function()? onE
             child: Padding(
               padding:  EdgeInsets.all(5),
               child: Image(
-                image: AssetImage(image!), height: 75, width: 75, fit: BoxFit.scaleDown,
+                image: NetworkImage(image!), height: 75, width: 75, fit: BoxFit.scaleDown,
               ),
             ),
           ),
@@ -259,14 +268,12 @@ AlertDialog addStickerImagesAlertDialogWidget() {
                                         color: blackColor,
                                       ),
                                       SizedBox(height: 10,),
-                                      // controller.frontShirtImage != null ? Container(
-                                      //     height: 100,
-                                      //   width: 120.w,
-                                      //   color: Colors.black45,
-                                      //   child: Image(image: FileImage(
-                                      //     controller.frontShirtImage!
-                                      //   ), height: 60.h,width: 120.w,)
-                                      // ) : Container(),
+                                      controller.stickerImage != null ? Container(
+                                          height: 150,
+                                          width: 200.w,
+                                          color: Colors.transparent,
+                                          child: Image.memory(controller.stickerWeb)
+                                          ) : Container(),
 
                                       SizedBox(height: 20,),
                                       commonButton(
@@ -289,10 +296,16 @@ AlertDialog addStickerImagesAlertDialogWidget() {
                         ),
                         //----===--------------------- add button ------------------------====-----
                         SizedBox(height: 85.h,),
-                        commonButton(
+                        controller.addStickerBool == true ? CircularProgressIndicator() : commonButton(
                           buttonName: "Add",
                           onTap: (){
-
+                            if (controller.stickerImageFormKey.currentState!.validate() ) {
+                              controller.addShirtImages();
+                            } else {
+                              Get.snackbar("Add Sticker Data",
+                                          "Please Fill All The Fields",
+                                           duration: Duration(seconds: 3));
+                            }
                           },
                           buttonColor: redColor,
                           textColor: whiteColor,
@@ -310,7 +323,7 @@ AlertDialog addStickerImagesAlertDialogWidget() {
 // ------====--------------------------------------------------------------===-----
 // ---------------   ==-= =--------= Add Shirt Images Alert Dialog Widget =--------= =-== -------------
 // ------====--------------------------------------------------------------===-----
-AlertDialog editStickerImagesAlertDialogWidget() {
+AlertDialog editStickerImagesAlertDialogWidget({String? id,String? stickerImage}) {
   return AlertDialog(
       scrollable: true,
       alignment: Alignment.center,
@@ -395,6 +408,34 @@ AlertDialog editStickerImagesAlertDialogWidget() {
                                       smallText(
                                         title: "Update Sticker",
                                         color: blackColor,
+                                      ),
+                                      SizedBox(height: 10,),
+                                      // controller.backShirtImage == null ? Container() :
+                                      controller.editStickerImage != null ? Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                  onTap: (){
+                                                    controller.editStickerImage = null;
+                                                    controller.update();
+                                                  },
+                                                  child: Icon(CupertinoIcons.multiply)),
+                                            ],
+                                          ),
+                                          Container(
+                                              height: 150,
+                                              width: 200.w,
+                                              color: Colors.transparent,
+                                              child: Image.memory(controller.editStickerWeb)
+                                          ),
+                                        ],
+                                      ) : Container(
+                                          height: 150,
+                                          width: 200.w,
+                                          color: Colors.transparent,
+                                          child: Image.network(stickerImage!)
                                       ),
                                       SizedBox(height: 20,),
                                       commonButton(
