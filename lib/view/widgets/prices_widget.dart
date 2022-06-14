@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/constants/form_validator_constant.dart';
+import 'package:ifresh_originals_admin_panel/controller/price_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
 SizedBox priceWidget(context) {
@@ -16,87 +17,99 @@ SizedBox priceWidget(context) {
           vertical: 20.h
       ),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            largeText(
-                title: "Prices",
-                color: Colors.black,
-                fontWeight: FontWeight.w600
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            commonText(
-                title: "Add price of stickers, texts, and images on Shirts",
-                textStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 13
-                )
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Wrap(
-              spacing: 30,
-              runSpacing: 30,
+        child: GetBuilder<PriceController>(
+          init: PriceController(),
+          builder: (controller) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                pricesItemWidget(
-                    image: "assets/Asset 110.png",
-                    noOfShirt: "2",
-                    priceFor: "Per Text Price",
-                    onButtonTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return textPriceAlertDialogWidget();
-                          });
-                    }
+                largeText(
+                    title: "Prices",
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600
                 ),
-                pricesItemWidget(
-                    image: "assets/Asset 90.png",
-                    noOfShirt: "2",
-                    priceFor: "Per Sticker Price",
-                    onButtonTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return stickerPriceAlertDialogWidget();
-                          });
-                    }
+                SizedBox(
+                  height: 10,
                 ),
-                pricesItemWidget(
-                    image: "assets/Asset 80.png",
-                    noOfShirt: "4",
-                    priceFor: "Per Image On Shirt Price",
-                    onButtonTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return imageOnShirtsPriceAlertDialogWidget();
-                          });
-                    }
+                commonText(
+                    title: "Add price of stickers, texts, and images on Shirts",
+                    textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13
+                    )
                 ),
-                deliveryPricesItemWidget(
-                    image: "assets/Asset 120.png",
-                    firstDeliveryPrice: "5",
-                    secondDeliveryPrice: "7",
-                    thirdDeliveryPrice: "8",
-                    onButtonTap: (){
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return deliveryPriceAlertDialogWidget();
-                          });
-                    }
-                )
+                SizedBox(
+                  height: 25,
+                ),
+                Wrap(
+                  spacing: 30,
+                  runSpacing: 30,
+                  children: [
+                    pricesItemWidget(
+                        image: "assets/Asset 110.png",
+                        noOfShirt: "${controller.textPrice}",
+                        priceFor: "Per Text Price",
+                        onButtonTap: (){
+                          controller.textPriceController.text = controller.textPrice.toString();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return textPriceAlertDialogWidget();
+                              });
+                        }
+                    ),
+                    pricesItemWidget(
+                        image: "assets/Asset 90.png",
+                        noOfShirt: "${controller.stickerPrice}",
+                        priceFor: "Per Sticker Price",
+                        onButtonTap: (){
+                          controller.stickerPriceController.text = controller.stickerPrice.toString();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return stickerPriceAlertDialogWidget();
+                              });
+                        }
+                    ),
+                    pricesItemWidget(
+                        image: "assets/Asset 80.png",
+                        noOfShirt: "${controller.imageOnShirtPrice}",
+                        priceFor: "Per Image On Shirt Price",
+                        onButtonTap: (){
+                          controller.imageOnShirtPriceController.text = controller.imageOnShirtPrice.toString();
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return imageOnShirtsPriceAlertDialogWidget();
+                              });
+                        }
+                    ),
+                    deliveryPricesItemWidget(
+                        image: "assets/Asset 120.png",
+                        firstDeliveryPrice: "${controller.deliveryOnDemandPrice}",
+                        secondDeliveryPrice: "${controller.deliveryExpeditePrice}",
+                        thirdDeliveryPrice: "${controller.deliveryStandardPrice}",
+                        onButtonTap: (){
+                          controller.deliveryOnDemandPriceController.text = controller.deliveryOnDemandPrice.toString();
+                          controller.deliveryExpeditePriceController.text = controller.deliveryExpeditePrice.toString();
+                          controller.deliveryStandardPriceController.text = controller.deliveryStandardPrice.toString();
 
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return deliveryPriceAlertDialogWidget();
+                              });
+                        }
+                    )
+
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                )
               ],
-            ),
-            SizedBox(
-              height: 40,
-            )
-          ],
+            );
+          }
         ),
       ),
     ),
@@ -327,65 +340,79 @@ AlertDialog textPriceAlertDialogWidget() {
       insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
       content: Builder(
           builder: (context) {
-            return  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // --- === button === ---
-                        SizedBox(height: 10.h,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return  GetBuilder<PriceController>(
+              init: PriceController(),
+              builder: (controller) {
+                return Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(width: 1,),
-                            largeText(title: "Update Text Price",fontWeight: FontWeight.w500),
-                            InkWell(
-                                onTap: (){
-                                  Get.back();
-                                },
-                                child: Icon(CupertinoIcons.clear))
-                          ],),
-                        SizedBox(height: 60.h,),
-                        // ------====--------------------------------------------------------------===-----
-                        // ---------------   ==-= =--------= text form fields =--------= =-== -------------
-                        // ------====--------------------------------------------------------------===-----
-                        Form(
-                          // key: controller.editShirtImageFormKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // ----=-=--- shirt name form field ---=-=-----
-                              Container(
-                                width: 250,
-                                decoration:  BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:  BorderRadius.circular(40.0),
-                                    boxShadow: const [
-                                      BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                                    ]
-                                ),
-                                child: commonTextFormField(
-                                    hintText: "Text Price",
-                                    validator: FormValidatorConstant.commonValidator,
-                                    // controller: controller.editedShirtNameController
-                                ),
-                              ),
-                            ],),
-                        ),
+                            // --- === button === ---
+                            SizedBox(height: 10.h,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(width: 1,),
+                                largeText(title: "Update Text Price",fontWeight: FontWeight.w500),
+                                InkWell(
+                                    onTap: (){
+                                      Get.back();
+                                    },
+                                    child: Icon(CupertinoIcons.clear))
+                              ],),
+                            SizedBox(height: 60.h,),
+                            // ------====--------------------------------------------------------------===-----
+                            // ---------------   ==-= =--------= text form fields =--------= =-== -------------
+                            // ------====--------------------------------------------------------------===-----
+                            Form(
+                              key: controller.textPriceFormKey,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // ----=-=--- shirt name form field ---=-=-----
+                                  Container(
+                                    width: 250,
+                                    decoration:  BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:  BorderRadius.circular(40.0),
+                                        boxShadow: const [
+                                          BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                        ]
+                                    ),
+                                    child: commonTextFormField(
+                                        hintText: "Text Price",
+                                        validator: FormValidatorConstant.commonValidator,
+                                        controller: controller.textPriceController
+                                    ),
+                                  ),
+                                ],),
+                            ),
 
-                        //----===--------------------- add button ------------------------====-----
-                        SizedBox(height: 85.h,),
-                        commonButton(
-                          buttonName: "Update",
-                          onTap: (){
+                            //----===--------------------- add button ------------------------====-----
+                            SizedBox(height: 85.h,),
+                            controller.textPriceBool == true ? CircularProgressIndicator() :
+                            commonButton(
+                              buttonName: "Update",
+                              onTap: (){
 
-                          },
-                          buttonColor: redColor,
-                          textColor: whiteColor,
-                          buttonWidth: 250,
-                          buttonHeight: 40,
-                        ),
+                                if (controller.textPriceFormKey.currentState!.validate()) {
+                                     controller.updateTextPrice();
+                                } else {
+                                  Get.snackbar("Update Text Prices",
+                                      "Please Fill All The Fields",
+                                      duration: Duration(seconds: 3));
+                                }
 
-                      ]);
+                              },
+                              buttonColor: redColor,
+                              textColor: whiteColor,
+                              buttonWidth: 250,
+                              buttonHeight: 40,
+                            ),
+
+                          ]);
+              }
+            );
 
           })
   );
@@ -405,65 +432,77 @@ AlertDialog stickerPriceAlertDialogWidget() {
       insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
       content: Builder(
           builder: (context) {
-            return  Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // --- === button === ---
-                  SizedBox(height: 10.h,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return  GetBuilder<PriceController>(
+                init: PriceController(),
+                builder: (controller) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: 1,),
-                      largeText(title: "Update Sticker Price",fontWeight: FontWeight.w500),
-                      InkWell(
-                          onTap: (){
-                            Get.back();
-                          },
-                          child: Icon(CupertinoIcons.clear))
-                    ],),
-                  SizedBox(height: 60.h,),
-                  // ------====--------------------------------------------------------------===-----
-                  // ---------------   ==-= =--------= text form fields =--------= =-== -------------
-                  // ------====--------------------------------------------------------------===-----
-                  Form(
-                    // key: controller.editShirtImageFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // ----=-=--- shirt name form field ---=-=-----
-                        Container(
-                          width: 250,
-                          decoration:  BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:  BorderRadius.circular(40.0),
-                              boxShadow: const [
-                                BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                              ]
-                          ),
-                          child: commonTextFormField(
-                            hintText: "Sticker Price",
-                            validator: FormValidatorConstant.commonValidator,
-                            // controller: controller.editedShirtNameController
-                          ),
-                        ),
-                      ],),
-                  ),
+                      // --- === button === ---
+                      SizedBox(height: 10.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 1,),
+                          largeText(title: "Update Sticker Price",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
+                        ],),
+                      SizedBox(height: 60.h,),
+                      // ------====--------------------------------------------------------------===-----
+                      // ---------------   ==-= =--------= text form fields =--------= =-== -------------
+                      // ------====--------------------------------------------------------------===-----
+                      Form(
+                        key: controller.stickerPriceFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // ----=-=--- shirt name form field ---=-=-----
+                            Container(
+                              width: 250,
+                              decoration:  BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:  BorderRadius.circular(40.0),
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                  ]
+                              ),
+                              child: commonTextFormField(
+                                hintText: "Sticker Price",
+                                validator: FormValidatorConstant.commonValidator,
+                                controller: controller.stickerPriceController
+                              ),
+                            ),
+                          ],),
+                      ),
 
-                  //----===--------------------- add button ------------------------====-----
-                  SizedBox(height: 85.h,),
-                  commonButton(
-                    buttonName: "Update",
-                    onTap: (){
+                      //----===--------------------- add button ------------------------====-----
+                      SizedBox(height: 85.h,),
+                      controller.stickerPriceBool == true ? CircularProgressIndicator() : commonButton(
+                        buttonName: "Update",
+                        onTap: (){
 
-                    },
-                    buttonColor: redColor,
-                    textColor: whiteColor,
-                    buttonWidth: 250,
-                    buttonHeight: 40,
-                  ),
+                          if (controller.stickerPriceFormKey.currentState!.validate()) {
+                             controller.updateStickerPrice();
+                          } else {
+                            Get.snackbar("Update Sticker Prices",
+                                "Please Fill All The Fields",
+                                duration: Duration(seconds: 3));
+                          }
+                        },
+                        buttonColor: redColor,
+                        textColor: whiteColor,
+                        buttonWidth: 250,
+                        buttonHeight: 40,
+                      ),
 
-                ]);
+                    ]);
+              }
+            );
 
           })
   );
@@ -483,67 +522,80 @@ AlertDialog imageOnShirtsPriceAlertDialogWidget() {
       insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
       content: Builder(
           builder: (context) {
-            return  Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // --- === button === ---
-                  SizedBox(height: 10.h,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return  GetBuilder<PriceController>(
+                init: PriceController(),
+                builder: (controller) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        width: 1,
+                      // --- === button === ---
+                      SizedBox(height: 10.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 1,
+                          ),
+                          largeText(title: "Update Image On Shirts Price",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
+                        ],),
+                      SizedBox(height: 60.h,),
+                      // ------====--------------------------------------------------------------===-----
+                      // ---------------   ==-= =--------= text form fields =--------= =-== -------------
+                      // ------====--------------------------------------------------------------===-----
+                      Form(
+                        key: controller.imageOnShirtPriceFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // ----=-=--- shirt name form field ---=-=-----
+                            Container(
+                              width: 250,
+                              decoration:  BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:  BorderRadius.circular(40.0),
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                  ]
+                              ),
+                              child: commonTextFormField(
+                                hintText: "Image On Shirts Price",
+                                validator: FormValidatorConstant.commonValidator,
+                                 controller: controller.imageOnShirtPriceController
+                              ),
+                            ),
+                          ],),
                       ),
-                      largeText(title: "Update Image On Shirts Price",fontWeight: FontWeight.w500),
-                      InkWell(
-                          onTap: (){
-                            Get.back();
-                          },
-                          child: Icon(CupertinoIcons.clear))
-                    ],),
-                  SizedBox(height: 60.h,),
-                  // ------====--------------------------------------------------------------===-----
-                  // ---------------   ==-= =--------= text form fields =--------= =-== -------------
-                  // ------====--------------------------------------------------------------===-----
-                  Form(
-                    // key: controller.editShirtImageFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // ----=-=--- shirt name form field ---=-=-----
-                        Container(
-                          width: 250,
-                          decoration:  BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:  BorderRadius.circular(40.0),
-                              boxShadow: const [
-                                BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                              ]
-                          ),
-                          child: commonTextFormField(
-                            hintText: "Image On Shirts Price",
-                            validator: FormValidatorConstant.commonValidator,
-                            // controller: controller.editedShirtNameController
-                          ),
-                        ),
-                      ],),
-                  ),
 
-                  //----===--------------------- add button ------------------------====-----
-                  SizedBox(height: 85.h,),
-                  commonButton(
-                    buttonName: "Update",
-                    onTap: (){
+                      //----===--------------------- add button ------------------------====-----
+                      SizedBox(height: 85.h,),
+                      controller.imageOnShirtPriceBool == true ? CircularProgressIndicator() :commonButton(
+                        buttonName: "Update",
+                        onTap: (){
 
-                    },
-                    buttonColor: redColor,
-                    textColor: whiteColor,
-                    buttonWidth: 250,
-                    buttonHeight: 40,
-                  ),
+                          if (controller.imageOnShirtPriceFormKey.currentState!.validate()) {
+                            controller.updateImageOnShirtPrice();
+                          } else {
+                            Get.snackbar("Update Images On Shirts Prices",
+                                "Please Fill All The Fields",
+                                duration: Duration(seconds: 3));
+                          }
 
-                ]);
+                        },
+                        buttonColor: redColor,
+                        textColor: whiteColor,
+                        buttonWidth: 250,
+                        buttonHeight: 40,
+                      ),
+
+                    ]);
+              }
+            );
 
           })
   );
@@ -563,141 +615,154 @@ AlertDialog deliveryPriceAlertDialogWidget() {
       insetPadding: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
       content: Builder(
           builder: (context) {
-            return  Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // --- === button === ---
-                  SizedBox(height: 10.h,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return  GetBuilder<PriceController>(
+                init: PriceController(),
+                builder: (controller) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: 1,),
-                      largeText(title: "Update Delivery Price",fontWeight: FontWeight.w500),
-                      InkWell(
-                          onTap: (){
-                            Get.back();
-                          },
-                          child: Icon(CupertinoIcons.clear))
-                    ],),
-                  SizedBox(height: 60.h,),
-                  // ------====--------------------------------------------------------------===-----
-                  // ---------------   ==-= =--------= text form fields =--------= =-== -------------
-                  // ------====--------------------------------------------------------------===-----
-                  Form(
-                    // key: controller.editShirtImageFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      // --- === button === ---
+                      SizedBox(height: 10.h,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 1,),
+                          largeText(title: "Update Delivery Price",fontWeight: FontWeight.w500),
+                          InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child: Icon(CupertinoIcons.clear))
+                        ],),
+                      SizedBox(height: 60.h,),
+                      // ------====--------------------------------------------------------------===-----
+                      // ---------------   ==-= =--------= text form fields =--------= =-== -------------
+                      // ------====--------------------------------------------------------------===-----
+                      Form(
+                        key: controller.deliveryPriceFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: Column(
                           children: [
-                            // ----=-=--- shirt name form field ---=-=-----
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                smallText(
-                                  title: "   3-6 Days Delivery Price."
+                                // ----=-=--- shirt name form field ---=-=-----
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    smallText(
+                                      title: "   3-6 Days Delivery Price."
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Container(
+                                      width: 250,
+                                      decoration:  BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:  BorderRadius.circular(40.0),
+                                          boxShadow: const [
+                                            BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                          ]
+                                      ),
+                                      child: commonTextFormField(
+                                        hintText: "Price",
+                                        validator: FormValidatorConstant.commonValidator,
+                                        controller: controller.deliveryOnDemandPriceController
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 250,
-                                  decoration:  BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:  BorderRadius.circular(40.0),
-                                      boxShadow: const [
-                                        BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                                      ]
-                                  ),
-                                  child: commonTextFormField(
-                                    hintText: "Price",
-                                    validator: FormValidatorConstant.commonValidator,
-                                    // controller: controller.editedShirtNameController
-                                  ),
-                                ),
-                              ],
-                            ),
 
-                          ],),
-                        SizedBox(height: 20,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // ----=-=--- shirt name form field ---=-=-----
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              ],),
+                            SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                smallText(
-                                    title: "   4-8 Days Delivery Price."
+                                // ----=-=--- shirt name form field ---=-=-----
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    smallText(
+                                        title: "   4-8 Days Delivery Price."
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Container(
+                                      width: 250,
+                                      decoration:  BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:  BorderRadius.circular(40.0),
+                                          boxShadow: const [
+                                            BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                          ]
+                                      ),
+                                      child: commonTextFormField(
+                                        hintText: "Price",
+                                        validator: FormValidatorConstant.commonValidator,
+                                        controller: controller.deliveryExpeditePriceController
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 250,
-                                  decoration:  BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:  BorderRadius.circular(40.0),
-                                      boxShadow: const [
-                                        BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                                      ]
-                                  ),
-                                  child: commonTextFormField(
-                                    hintText: "Price",
-                                    validator: FormValidatorConstant.commonValidator,
-                                    // controller: controller.editedShirtNameController
-                                  ),
-                                ),
-                              ],
-                            ),
 
-                          ],),
-                        SizedBox(height: 20,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // ----=-=--- shirt name form field ---=-=-----
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              ],),
+                            SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                smallText(
-                                    title: "   8-10 Days Delivery Price."
+                                // ----=-=--- shirt name form field ---=-=-----
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    smallText(
+                                        title: "   8-10 Days Delivery Price."
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Container(
+                                      width: 250,
+                                      decoration:  BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:  BorderRadius.circular(40.0),
+                                          boxShadow: const [
+                                            BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
+                                          ]
+                                      ),
+                                      child: commonTextFormField(
+                                          hintText: "Price",
+                                          validator: FormValidatorConstant.commonValidator,
+                                          controller: controller.deliveryStandardPriceController
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 250,
-                                  decoration:  BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:  BorderRadius.circular(40.0),
-                                      boxShadow: const [
-                                        BoxShadow(color: Colors.black26, blurRadius: 6.0, spreadRadius: 0.2)
-                                      ]
-                                  ),
-                                  child: commonTextFormField(
-                                    hintText: "Price",
-                                    validator: FormValidatorConstant.commonValidator,
-                                    // controller: controller.editedShirtNameController
-                                  ),
-                                ),
-                              ],
-                            ),
 
-                          ],),
-                      ],
-                    ),
-                  ),
+                              ],),
+                          ],
+                        ),
+                      ),
 
-                  //----===--------------------- add button ------------------------====-----
-                  SizedBox(height: 85.h,),
-                  commonButton(
-                    buttonName: "Update",
-                    onTap: (){
+                      //----===--------------------- add button ------------------------====-----
+                      SizedBox(height: 85.h,),
+                      controller.deliveryPriceBool == true ? CircularProgressIndicator() : commonButton(
+                        buttonName: "Update",
+                        onTap: (){
 
-                    },
-                    buttonColor: redColor,
-                    textColor: whiteColor,
-                    buttonWidth: 250,
-                    buttonHeight: 40,
-                  ),
+                          if (controller.deliveryPriceFormKey.currentState!.validate()) {
+                             controller.updateDeliveryPrice();
+                          } else {
+                            Get.snackbar("Update Delivery Prices",
+                                "Please Fill All The Fields",
+                                duration: Duration(seconds: 3));
+                          }
 
-                ]);
+                        },
+                        buttonColor: redColor,
+                        textColor: whiteColor,
+                        buttonWidth: 250,
+                        buttonHeight: 40,
+                      ),
+
+                    ]);
+              }
+            );
 
           })
   );

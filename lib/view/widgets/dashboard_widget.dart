@@ -3,9 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:ifresh_originals_admin_panel/constants/constants.dart';
 import 'package:ifresh_originals_admin_panel/controller/home_controller.dart';
+import 'package:ifresh_originals_admin_panel/controller/orders_controller.dart';
+import 'package:ifresh_originals_admin_panel/controller/shirt_images_controller.dart';
+import 'package:ifresh_originals_admin_panel/controller/sticker_controller.dart';
 import 'package:ifresh_originals_admin_panel/view/widgets/common_widgets.dart';
 
 SizedBox dashboardWidget() {
+  final ShirtImagesController shirtImagesController = Get.put(ShirtImagesController());
+  final StickerController stickerController = Get.put(StickerController());
+  final OrderController orderController = Get.put(OrderController());
   return SizedBox(
     width: 1.sw,
     height: 1.sh,
@@ -36,37 +42,38 @@ SizedBox dashboardWidget() {
             SizedBox(
               height: 25,
             ),
-            Wrap(
-             spacing: 30,
+            Obx(() =>  Wrap(
+              spacing: 30,
               runSpacing: 30,
               children: [
                 dashboardItemWidget(
-                  image: "assets/Asset 80.png",
-                  title: "Shirt Images",
-                  noOfShirt: "289",
-                  onTap: (){}
+                    image: "assets/Asset 80.png",
+                    title: "Shirt Images",
+                    noOfShirt: "${shirtImagesController.shirtsDataList.length}",
+                    onTap: (){}
                 ),
                 dashboardItemWidget(
                     image: "assets/Asset 90.png",
                     title: "Sticker",
-                    noOfShirt: "289",
+                    noOfShirt: "${stickerController.stickerDataList.length}",
                     onTap: (){}
                 ),
                 dashboardItemWidget(
                     image: "assets/Asset 120.png",
                     title: "Today Orders",
-                    noOfShirt: "289",
+                    noOfShirt:"${orderController.todayOrdersDataList.length}",
                     onTap: (){}
                 ),
                 dashboardItemWidget(
                     image: "assets/Asset 120.png",
                     title: "Total Orders",
-                    noOfShirt: "289",
+                    noOfShirt: "${orderController.allOrderDataList.length}",
                     onTap: (){}
                 ),
 
               ],
-            ),
+            ),),
+
             SizedBox(
               height: 40,
             )

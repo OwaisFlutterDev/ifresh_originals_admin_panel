@@ -113,13 +113,14 @@ class ShirtImagesController extends GetxController{
 
         backSIUrl = await firebaseStorageReff.getDownloadURL();
 
+
         final docData = FirebaseFirestore.instance.collection('shirts').doc();
         await docData.set({
           "id": docData.id,
           "frontImage": frontSIUrl,
           "backImage": backSIUrl,
           "shirtName": shirtNameController.text,
-          "shirtPrice": shirtPriceController.text,
+          "shirtPrice": shirtPriceController.text
 
         }).then((_) => print("Data Of shirt Is Added to Firestore "))
             .catchError((onError) => print(onError.toString()));
@@ -204,10 +205,12 @@ class ShirtImagesController extends GetxController{
       update();
       if (editFrontShirtImage == null && editBackShirtImage == null) {
         print("1");
+
+
         final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
         await docData.update({
           "shirtName": editedShirtNameController.text,
-          "shirtPrice": editedShirtPriceController.text,
+          "shirtPrice": editedShirtPriceController.text
 
         }).then((_) => print("Data Of shirt Is Updated "))
             .catchError((onError) => print(onError.toString()));
@@ -299,6 +302,8 @@ class ShirtImagesController extends GetxController{
 
         frontSIUrl = await firebaseStorageRef.getDownloadURL();
 
+
+
         final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
         await docData.update({
           "frontImage": frontSIUrl,
@@ -338,6 +343,7 @@ class ShirtImagesController extends GetxController{
         await uploadTaskk.whenComplete(() => () { print("Upload Complete"); });
 
         backSIUrl = await firebaseStorageReff.getDownloadURL();
+
 
         final docData = FirebaseFirestore.instance.collection('shirts').doc(id);
         await docData.update({
