@@ -363,7 +363,11 @@ SizedBox orderWidget(context) {
                                                                                             buttonWidth: 100,
                                                                                             textSize: 13,
                                                                                             textColor: whiteColor,
-                                                                                            onTap: (){}
+                                                                                            onTap: (){
+                                                                                              orderController.downloadShirtImage(
+                                                                                                  orderController.allOrderDataList[index].productList![ind].frontImage!
+                                                                                              );
+                                                                                            }
                                                                                         )
                                                                                       ],
                                                                                     ),

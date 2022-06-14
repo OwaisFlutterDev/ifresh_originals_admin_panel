@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:ifresh_originals_admin_panel/model/order_model.dart';
+import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:intl/intl.dart';
 
 class OrderController extends GetxController{
@@ -74,8 +75,6 @@ class OrderController extends GetxController{
     }
   }
 
-
-
 // ==============================================================================
 // -------------- ===========    update to Pending the Status    ========== --------------
 // ==============================================================================
@@ -109,6 +108,19 @@ class OrderController extends GetxController{
       updateToPendingBool = false;
       update();
     }
+  }
+
+
+// ==============================================================================
+// -------------- ===========    download shirt images    ========== -----------
+// ==============================================================================
+
+  final WebImageDownloader _webImageDownloader = WebImageDownloader();
+   static const _url = "https://firebasestorage.googleapis.com/v0/b/ifresh-originals.appspot.com/o/shirt_design_images%2FJtzigZPu54SmNZkyTy9dcCZOLjK22022-06-14%2014%3A49%3A26.117215.png?alt=media&token=b1251b2e-27d7-4113-90e4-2d7227b1974d";
+
+  Future<void> downloadShirtImage(String url) async {
+    print(url);
+    await _webImageDownloader.downloadImageFromWeb(_url);
   }
 
 
