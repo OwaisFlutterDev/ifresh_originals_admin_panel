@@ -5,7 +5,7 @@ class ShirtImageModel {
   String? frontImage;
   String? backImage;
   String? shirtName;
-  String? shirtPrice;
+  int? shirtPrice;
 
   ShirtImageModel({
     this.id,

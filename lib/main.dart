@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         builder: (context , child) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
+            title: 'iFresh Originals Admin Panel',
             theme: ThemeData(
               primarySwatch: Colors.deepOrange,
             ),

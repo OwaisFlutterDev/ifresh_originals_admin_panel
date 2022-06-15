@@ -138,7 +138,7 @@ Widget pricesItemWidget({String? priceFor, String? image, String? noOfShirt, voi
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.black12,
+              color: bgColor,
               shape: BoxShape.circle,
               // image: DecorationImage(image: AssetImage("assets/Asset 80.png",),),
             ),
@@ -382,7 +382,8 @@ AlertDialog textPriceAlertDialogWidget() {
                                     ),
                                     child: commonTextFormField(
                                         hintText: "Text Price",
-                                        validator: FormValidatorConstant.commonValidator,
+                                        keyboardType: TextInputType.number,
+                                        validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                         controller: controller.textPriceController
                                     ),
                                   ),
@@ -474,7 +475,8 @@ AlertDialog stickerPriceAlertDialogWidget() {
                               ),
                               child: commonTextFormField(
                                 hintText: "Sticker Price",
-                                validator: FormValidatorConstant.commonValidator,
+                                  keyboardType: TextInputType.number,
+                                  validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                 controller: controller.stickerPriceController
                               ),
                             ),
@@ -566,7 +568,8 @@ AlertDialog imageOnShirtsPriceAlertDialogWidget() {
                               ),
                               child: commonTextFormField(
                                 hintText: "Image On Shirts Price",
-                                validator: FormValidatorConstant.commonValidator,
+                                  keyboardType: TextInputType.number,
+                                  validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                  controller: controller.imageOnShirtPriceController
                               ),
                             ),
@@ -666,7 +669,8 @@ AlertDialog deliveryPriceAlertDialogWidget() {
                                       ),
                                       child: commonTextFormField(
                                         hintText: "Price",
-                                        validator: FormValidatorConstant.commonValidator,
+                                          keyboardType: TextInputType.number,
+                                          validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                         controller: controller.deliveryOnDemandPriceController
                                       ),
                                     ),
@@ -697,7 +701,8 @@ AlertDialog deliveryPriceAlertDialogWidget() {
                                       ),
                                       child: commonTextFormField(
                                         hintText: "Price",
-                                        validator: FormValidatorConstant.commonValidator,
+                                          keyboardType: TextInputType.number,
+                                          validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                         controller: controller.deliveryExpeditePriceController
                                       ),
                                     ),
@@ -728,7 +733,8 @@ AlertDialog deliveryPriceAlertDialogWidget() {
                                       ),
                                       child: commonTextFormField(
                                           hintText: "Price",
-                                          validator: FormValidatorConstant.commonValidator,
+                                          keyboardType: TextInputType.number,
+                                          validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                           controller: controller.deliveryStandardPriceController
                                       ),
                                     ),

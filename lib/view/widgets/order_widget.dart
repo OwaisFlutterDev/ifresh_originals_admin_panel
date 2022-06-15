@@ -217,7 +217,7 @@ SizedBox orderWidget(context) {
                             TableCell(
                                 child: Center(
                                     child: commonText(
-                                        title: "\$  ${orderController.allOrderDataList[index].payedAmount}",
+                                        title: "\$${orderController.allOrderDataList[index].payedAmount}",
                                         textAlign: TextAlign.center,
                                         textStyle: TextStyle(color: Colors.black,fontSize: 11)
 
@@ -398,7 +398,13 @@ SizedBox orderWidget(context) {
                                                                                             buttonWidth: 100,
                                                                                             textSize: 13,
                                                                                             textColor: whiteColor,
-                                                                                            onTap: (){}
+                                                                                            onTap: (){
+
+                                                                                              orderController.downloadShirtImage(
+                                                                                                  orderController.allOrderDataList[index].productList![ind].backImage!
+                                                                                              );
+
+                                                                                            }
                                                                                         )
                                                                                       ],
                                                                                     ),

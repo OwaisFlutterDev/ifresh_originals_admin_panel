@@ -5,6 +5,7 @@ class FormValidatorConstant{
   static MultiValidator passwordValidatorForSignUp = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
     MinLengthValidator(6, errorText: 'password must be at least 6 digits long'),
+
     // PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: 'passwords must have at least one special character')
   ]);
 

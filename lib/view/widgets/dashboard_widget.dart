@@ -105,7 +105,7 @@ Widget dashboardItemWidget({String? image, String? noOfShirt, String? title, voi
                     height: 60,
                     width: 60,
                     decoration: BoxDecoration(
-                      color: Colors.black12,
+                      color: bgColor,
                       shape: BoxShape.circle,
                       // image: DecorationImage(image: AssetImage("assets/Asset 80.png",),),
                     ),

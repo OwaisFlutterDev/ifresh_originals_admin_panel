@@ -22,7 +22,7 @@ class OrderController extends GetxController{
     super.onInit();
 
     allOrderDataList.bindStream(getAllOrderData());
-    todayOrdersDataList.bindStream(getAllOrderData());
+    todayOrdersDataList.bindStream(todayOrderData());
 
   }
 
@@ -126,23 +126,17 @@ class OrderController extends GetxController{
 
   Future<void> downloadShirtImage(String url) async {
 
-    Uint8List bytes = (await NetworkAssetBundle(Uri.parse(url)).load(url))
-        .buffer
-        .asUint8List();
     print(url);
-    await _webImageDownloader.downloadImageFromUInt8List(uInt8List: bytes);
-
-    // // Uri uri = Uri.parse(url);
-    // //
-    // // Uint8List bytes = await readBytes(uri);
-    //
-    //
-    // String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    //
-    // await FileSaver.instance.saveFile(fileName, bytes, 'jpg',
-    //     mimeType: MimeType.JPEG);
+    await _webImageDownloader.downloadImageFromWeb(url);
 
   }
+
+  // Future<void> downloadShirtImage(String url) async {
+  //
+  //   print(url);
+  //   await _webImageDownloader.downloadImageFromWeb(url);
+  //
+  // }
 
 
 

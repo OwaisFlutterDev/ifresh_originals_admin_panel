@@ -67,7 +67,7 @@ Widget commonButton({ Function()? onTap, Color? buttonColor,Color? textColor, do
 //                        ================================
   Widget commonTextFormField({void Function(String?)? onSaved,String? Function(dynamic)? validator,
     bool obscureText = false,TextEditingController? controller , String? hintText, Function()? onTap,
-    bool readOnly = false, String? initialValue, Widget? prefixIcon, Widget? suffixIcon,
+    bool readOnly = false, String? initialValue, Widget? prefixIcon, Widget? suffixIcon,TextInputType? keyboardType
   }) {
     return TextFormField(
       style: TextStyle(color: Colors.black,),
@@ -100,6 +100,7 @@ Widget commonButton({ Function()? onTap, Color? buttonColor,Color? textColor, do
       onSaved: onSaved,
       validator: validator,
       onTap: onTap,
+      keyboardType: keyboardType,
     );
 }
 

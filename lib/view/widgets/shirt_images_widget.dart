@@ -132,7 +132,8 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
 
           // -=-== ------ image ------ -=-==
           Container(
-            // width: 120.w,
+            height: 120,
+            width: 150,
             decoration: BoxDecoration(
               color: bgColor,
               shape: BoxShape.circle,
@@ -140,7 +141,7 @@ Widget shirtImageItemWidget({String? image, String? shirtName,
             ),
             child: Padding(
               padding:  EdgeInsets.all(10),
-              child: Image.network(image!,height: 120, width: 150, fit: BoxFit.scaleDown,)
+              child: Image.network(image!,height: 110, width: 140, fit: BoxFit.scaleDown,)
 
               // Image(
               //   image: NetworkImage(image!), height: 120, width: 150, fit: BoxFit.scaleDown,
@@ -279,7 +280,8 @@ AlertDialog addShirtImagesAlertDialogWidget() {
                                     ),
                                     child: commonTextFormField(
                                       hintText: "Shirt Price",
-                                      validator: FormValidatorConstant.commonValidator,
+                                      keyboardType: TextInputType.number,
+                                      validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                       controller: controller.shirtPriceController
                                     ),
                                   ),
@@ -481,7 +483,8 @@ AlertDialog editShirtImagesAlertDialogWidget({String? frontImage, String? backIm
                               ),
                               child: commonTextFormField(
                                 hintText: "Shirt Price",
-                                validator: FormValidatorConstant.commonValidator,
+                                  keyboardType: TextInputType.number,
+                                  validator: (v) => int.tryParse(v) == null ? "only int type of value are allow" : null,
                                 controller: controller.editedShirtPriceController
                               ),
                             ),

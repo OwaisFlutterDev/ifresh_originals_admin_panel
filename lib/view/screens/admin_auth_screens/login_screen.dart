@@ -135,10 +135,6 @@ class LoginScreen extends StatelessWidget {
                                           ],
                                         ),
 
-
-
-
-
                                         // ----=-=--- login button ---=-=-----
                                         controller.loginBool ? CircularProgressIndicator() : commonButton(
                                           buttonHeight: 45,
