@@ -64,11 +64,11 @@ class ProductModel {
   String? frontImage;
   String? backImage;
   String? selectedSize;
-  double? perShirtPrice;
+  int? perShirtPrice;
   int? selectedQuantity;
-  double? totalDiscount;
-  double? totalPrice;
-  double? subTotal;
+  int? totalDiscount;
+  int? totalPrice;
+  int? subTotal;
   Timestamp?  currentDate;
 
   ProductModel({
